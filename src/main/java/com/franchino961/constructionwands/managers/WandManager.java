@@ -18,12 +18,14 @@ public class WandManager {
     private final Map<String, Wand> wands;
     private final NamespacedKey wandIdKey;
     private final NamespacedKey wandUsesKey;
+    private final NamespacedKey wandUuidKey;
 
     public WandManager(ConstructionWands plugin) {
         this.plugin = plugin;
         this.wands = new HashMap<>();
         this.wandIdKey = new NamespacedKey(plugin, "wand_id");
         this.wandUsesKey = new NamespacedKey(plugin, "wand_uses");
+        this.wandUuidKey = new NamespacedKey(plugin, "wand_uuid");
     }
 
     public void loadWandsFromConfig() {
@@ -73,6 +75,7 @@ public class WandManager {
             if (wand.getModelData() > 0) meta.setCustomModelData(wand.getModelData());
             meta.getPersistentDataContainer().set(wandIdKey, PersistentDataType.STRING, wandId);
             meta.getPersistentDataContainer().set(wandUsesKey, PersistentDataType.INTEGER, currentUses);
+            meta.getPersistentDataContainer().set(wandUuidKey, PersistentDataType.STRING, UUID.randomUUID().toString());
             item.setItemMeta(meta);
         }
         return item;
