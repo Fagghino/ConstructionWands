@@ -14,11 +14,14 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WandInteractListener implements Listener {
 
     private final ConstructionWands plugin;
     private final WandManager wandManager;
+    private final Map<Player, Long> lastUse = new HashMap<>();
 
     public WandInteractListener(ConstructionWands plugin, WandManager wandManager) {
         this.plugin = plugin;
@@ -46,6 +49,18 @@ public class WandInteractListener implements Listener {
         Wand wand = wandManager.getWand(wandId);
         if (wand == null) return;
 
+        long delay = wand.getDelay();
+        if (delay > 0) {
+            long currentTime = System.currentTimeMillis();
+            Long lastUseTime = lastUse.get(player);
+            if (lastUseTime != null && currentTime - lastUseTime < delay) {
+                String cooldownMsg = plugin.getConfig().getString("messages.cooldown", "&cDevi aspettare prima di usare nuovamente la bacchetta!");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', cooldownMsg));
+                return;
+            }
+            lastUse.put(player, currentTime);
+        }
+
         ItemStack offHand = player.getInventory().getItemInOffHand();
         if (offHand == null || offHand.getType().isAir() || !offHand.getType().isBlock()) {
             String noBlocksMsg = plugin.getConfig().getString("messages.no-blocks", "&cNon hai abbastanza blocchi nella mano secondaria!");
@@ -58,8 +73,9 @@ public class WandInteractListener implements Listener {
         if (clickedBlock == null || blockFace == null) return;
 
         int range = wand.getRange();
+        int length = wand.getLength();
 
-        int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, offHand.getType(), range);
+        int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, offHand.getType(), range, length);
 
         if (blocksPlaced > 0) {
             if (player.getGameMode() != org.bukkit.GameMode.CREATIVE) {
@@ -75,20 +91,24 @@ public class WandInteractListener implements Listener {
         }
     }
 
-    private int placeBlocks(Player player, Block clickedBlock, BlockFace face, Material material, int range) {
+    private int placeBlocks(Player player, Block clickedBlock, BlockFace face, Material material, int range, int length) {
         int blocksPlaced = 0;
         Block startBlock = clickedBlock.getRelative(face);
         int offset = (range - 1) / 2;
+        int lengthOffset = (length - 1) / 2;
         BlockFace[] perpendiculars = getPerpendicularFaces(face);
         BlockFace perp1 = perpendiculars[0];
         BlockFace perp2 = perpendiculars[1];
 
-        for (int i = -offset; i <= offset; i++) {
-            for (int j = -offset; j <= offset; j++) {
-                Block targetBlock = startBlock.getRelative(perp1, i).getRelative(perp2, j);
-                if (canPlaceBlock(targetBlock, player)) {
-                    targetBlock.setType(material);
-                    blocksPlaced++;
+        for (int k = -lengthOffset; k <= lengthOffset; k++) {
+            Block layerBlock = startBlock.getRelative(face, k);
+            for (int i = -offset; i <= offset; i++) {
+                for (int j = -offset; j <= offset; j++) {
+                    Block targetBlock = layerBlock.getRelative(perp1, i).getRelative(perp2, j);
+                    if (canPlaceBlock(targetBlock, player)) {
+                        targetBlock.setType(material);
+                        blocksPlaced++;
+                    }
                 }
             }
         }
