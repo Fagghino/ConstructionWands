@@ -7,8 +7,8 @@ description: Plugin per bacchette di costruzione personalizzate
 
 commands:
   wand:
-    description: Ottieni una bacchetta di costruzione
-    usage: /wand <nome_bacchetta>
+    description: Ottieni o dai una bacchetta di costruzione
+    usage: /wand <nome_bacchetta> [nome_player] [quantità]
     permission: constructionwands.give
     permission-message: Non hai il permesso per usare questo comando!
 
