@@ -1,0 +1,51 @@
+# Configuration file for ConstructionWands plugin
+# Define custom construction wands and messages
+# Each wand has specific attributes like name, model data, lore, range, type, uses, and whether it's infinite.
+# Modify the values as needed to customize your wands.
+# Wands can be given to players using the /wand command defined in plugin.yml
+# Ensure that the permissions are set correctly in plugin.yml to control access to the commands.
+# Example wands are provided below.
+
+wands:
+  basic_wand:
+    name: "&6Bacchetta Base"
+    model-data: 1001
+    lore:
+      - "&7Range: 1x1"
+      - "&7Click destro per piazzare blocchi"
+      - "&eUSES RIMANENTI: {uses}"
+    range: 1
+    type: BLAZE_ROD
+    uses: 100
+    infinite: false
+
+  medium_wand:
+    name: "&aBacchetta Media"
+    model-data: 1002
+    lore:
+      - "&7Range: 3x3"
+      - "&7Click destro per piazzare blocchi"
+      - "&eUSES RIMANENTI: {uses}"
+    range: 3
+    type: STICK
+    uses: 50
+    infinite: false
+
+  advanced_wand:
+    name: "&cBacchetta Avanzata"
+    model-data: 1003
+    lore:
+      - "&7Range: 5x5"
+      - "&7Click destro per piazzare blocchi"
+      - "&dINFINITA!"
+    range: 5
+    type: BLAZE_ROD
+    uses: -1
+    infinite: true
+
+messages:
+  no-permission: "&cNon hai il permesso per usare questo comando!"
+  wand-given: "&aHai ricevuto una {wand}!"
+  wand-not-found: "&cBacchetta non trovata!"
+  no-blocks: "&cNon hai abbastanza blocchi nella mano secondaria!"
+  uses-depleted: "&cLa bacchetta ha esaurito gli usi!"

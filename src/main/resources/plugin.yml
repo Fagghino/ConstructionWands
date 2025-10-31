@@ -1,0 +1,21 @@
+name: ConstructionWands
+version: '1.0-SNAPSHOT'
+main: com.franchino961.constructionwands.ConstructionWands
+api-version: '1.20'
+author: Franchino961
+description: Plugin per bacchette di costruzione personalizzate
+
+commands:
+  wand:
+    description: Ottieni una bacchetta di costruzione
+    usage: /wand <nome_bacchetta>
+    permission: constructionwands.give
+    permission-message: Non hai il permesso per usare questo comando!
+
+permissions:
+  constructionwands.give:
+    description: Permesso per ottenere bacchette
+    default: op
+  constructionwands.use:
+    description: Permesso per usare le bacchette
+    default: true
