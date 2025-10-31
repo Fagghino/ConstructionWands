@@ -16,7 +16,7 @@ wands:
       - "&eUSES RIMANENTI: {uses}"
     range: 1
     length: 1
-    delay: 1000
+    delay: 0
     type: BLAZE_ROD
     uses: 100
     infinite: false
@@ -30,7 +30,7 @@ wands:
       - "&eUSES RIMANENTI: {uses}"
     range: 3
     length: 1
-    delay: 1000
+    delay: 0
     type: STICK
     uses: 50
     infinite: false
@@ -44,7 +44,7 @@ wands:
       - "&dINFINITA!"
     range: 5
     length: 1
-    delay: 1000
+    delay: 0
     type: BLAZE_ROD
     uses: -1
     infinite: true
