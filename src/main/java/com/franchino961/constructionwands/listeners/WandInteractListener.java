@@ -22,6 +22,7 @@ public class WandInteractListener implements Listener {
     private final ConstructionWands plugin;
     private final WandManager wandManager;
     private final Map<Player, Long> lastUse = new HashMap<>();
+    private final Map<Player, Long> lastClick = new HashMap<>();
 
     public WandInteractListener(ConstructionWands plugin, WandManager wandManager) {
         this.plugin = plugin;
@@ -34,6 +35,15 @@ public class WandInteractListener implements Listener {
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         Player player = event.getPlayer();
+
+        // Evita doppio click entro 100ms
+        long currentTime = System.currentTimeMillis();
+        Long lastClickTime = lastClick.get(player);
+        if (lastClickTime != null && currentTime - lastClickTime < 100) {
+            return;
+        }
+        lastClick.put(player, currentTime);
+
         ItemStack mainHand = player.getInventory().getItemInMainHand();
         if (!wandManager.isWand(mainHand)) return;
 
@@ -51,7 +61,6 @@ public class WandInteractListener implements Listener {
 
         long delay = wand.getDelay();
         if (delay > 0) {
-            long currentTime = System.currentTimeMillis();
             Long lastUseTime = lastUse.get(player);
             if (lastUseTime != null && currentTime - lastUseTime < delay) {
                 String cooldownMsg = plugin.getConfig().getString("messages.cooldown", "&cDevi aspettare prima di usare nuovamente la bacchetta!");
