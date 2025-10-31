@@ -75,7 +75,7 @@ public class WandInteractListener implements Listener {
         int range = wand.getRange();
         int length = wand.getLength();
 
-        int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, offHand.getType(), range, length);
+        int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, offHand.getType(), range, length, offHand.getAmount());
 
         if (blocksPlaced > 0) {
             if (player.getGameMode() != org.bukkit.GameMode.CREATIVE) {
@@ -91,7 +91,7 @@ public class WandInteractListener implements Listener {
         }
     }
 
-    private int placeBlocks(Player player, Block clickedBlock, BlockFace face, Material material, int range, int length) {
+    private int placeBlocks(Player player, Block clickedBlock, BlockFace face, Material material, int range, int length, int amount) {
         int blocksPlaced = 0;
         Block startBlock = clickedBlock.getRelative(face);
         int offset = (range - 1) / 2;
@@ -104,6 +104,7 @@ public class WandInteractListener implements Listener {
             Block layerBlock = startBlock.getRelative(face, k);
             for (int i = -offset; i <= offset; i++) {
                 for (int j = -offset; j <= offset; j++) {
+                    if (blocksPlaced >= amount) return blocksPlaced;
                     Block targetBlock = layerBlock.getRelative(perp1, i).getRelative(perp2, j);
                     if (canPlaceBlock(targetBlock, player)) {
                         targetBlock.setType(material);
