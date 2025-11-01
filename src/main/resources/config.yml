@@ -17,6 +17,7 @@ wands:
     range: 1
     length: 1
     delay: 0
+    source: offhand
     type: BLAZE_ROD
     uses: 100
     infinite: false
@@ -31,6 +32,7 @@ wands:
     range: 3
     length: 1
     delay: 0
+    source: offhand
     type: STICK
     uses: 50
     infinite: false
@@ -45,6 +47,7 @@ wands:
     range: 5
     length: 1
     delay: 0
+    source: offhand
     type: BLAZE_ROD
     uses: -1
     infinite: true

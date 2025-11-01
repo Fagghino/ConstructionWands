@@ -12,12 +12,13 @@ public class Wand {
     private final int range;
     private final int length;
     private final long delay;
+    private final String source;
     private final Material type;
     private final int maxUses;
     private final boolean infinite;
 
     public Wand(String id, String name, int modelData, List<String> lore,
-                int range, int length, long delay, Material type, int maxUses, boolean infinite) {
+                int range, int length, long delay, String source, Material type, int maxUses, boolean infinite) {
         this.id = id;
         this.name = name;
         this.modelData = modelData;
@@ -25,6 +26,7 @@ public class Wand {
         this.range = range;
         this.length = length;
         this.delay = delay;
+        this.source = source;
         this.type = type;
         this.maxUses = maxUses;
         this.infinite = infinite;
@@ -37,6 +39,7 @@ public class Wand {
     public int getRange() { return range; }
     public int getLength() { return length; }
     public long getDelay() { return delay; }
+    public String getSource() { return source; }
     public Material getType() { return type; }
     public int getMaxUses() { return maxUses; }
     public boolean isInfinite() { return infinite; }

@@ -70,13 +70,6 @@ public class WandInteractListener implements Listener {
             lastUse.put(player, currentTime);
         }
 
-        ItemStack offHand = player.getInventory().getItemInOffHand();
-        if (offHand == null || offHand.getType().isAir() || !offHand.getType().isBlock()) {
-            String noBlocksMsg = plugin.getConfig().getString("messages.no-blocks", "&cNon hai abbastanza blocchi nella mano secondaria!");
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', noBlocksMsg));
-            return;
-        }
-
         Block clickedBlock = event.getClickedBlock();
         BlockFace blockFace = event.getBlockFace();
         if (clickedBlock == null || blockFace == null) return;
@@ -84,12 +77,33 @@ public class WandInteractListener implements Listener {
         int range = wand.getRange();
         int length = wand.getLength();
 
-        int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, offHand.getType(), range, length, offHand.getAmount());
+        Material material;
+        int availableAmount;
+        if ("inventory".equalsIgnoreCase(wand.getSource())) {
+            material = clickedBlock.getType();
+            availableAmount = getTotalAmountInInventory(player, material);
+        } else {
+            ItemStack offHand = player.getInventory().getItemInOffHand();
+            if (offHand == null || offHand.getType().isAir() || !offHand.getType().isBlock()) {
+                String noBlocksMsg = plugin.getConfig().getString("messages.no-blocks", "&cNon hai abbastanza blocchi nella mano secondaria!");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', noBlocksMsg));
+                return;
+            }
+            material = offHand.getType();
+            availableAmount = offHand.getAmount();
+        }
+
+        int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, material, range, length, availableAmount);
 
         if (blocksPlaced > 0) {
             if (player.getGameMode() != org.bukkit.GameMode.CREATIVE) {
-                int toRemove = Math.min(blocksPlaced, offHand.getAmount());
-                offHand.setAmount(offHand.getAmount() - toRemove);
+                if ("inventory".equalsIgnoreCase(wand.getSource())) {
+                    removeFromInventory(player, material, blocksPlaced);
+                } else {
+                    ItemStack offHand = player.getInventory().getItemInOffHand();
+                    int toRemove = Math.min(blocksPlaced, offHand.getAmount());
+                    offHand.setAmount(offHand.getAmount() - toRemove);
+                }
             }
 
             if (!wandManager.decrementUses(mainHand)) {
@@ -147,5 +161,26 @@ public class WandInteractListener implements Listener {
             return false;
         }
         return true;
+    }
+
+    private int getTotalAmountInInventory(Player player, Material material) {
+        int total = 0;
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.getType() == material) {
+                total += item.getAmount();
+            }
+        }
+        return total;
+    }
+
+    private void removeFromInventory(Player player, Material material, int amount) {
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.getType() == material) {
+                int toRemove = Math.min(amount, item.getAmount());
+                item.setAmount(item.getAmount() - toRemove);
+                amount -= toRemove;
+                if (amount <= 0) break;
+            }
+        }
     }
 }

@@ -45,13 +45,14 @@ public class WandManager {
             int range = wandSection.getInt("range", 1);
             int length = wandSection.getInt("length", 1);
             long delay = wandSection.getLong("delay", 0);
+            String source = wandSection.getString("source", "offhand");
             Material type = Material.getMaterial(wandSection.getString("type", "STICK"));
             int uses = wandSection.getInt("uses", 100);
             boolean infinite = wandSection.getBoolean("infinite", false);
 
             if (type == null) continue;
 
-            Wand wand = new Wand(wandId, name, modelData, lore, range, length, delay, type, uses, infinite);
+            Wand wand = new Wand(wandId, name, modelData, lore, range, length, delay, source, type, uses, infinite);
             wands.put(wandId, wand);
         }
     }
