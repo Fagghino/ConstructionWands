@@ -82,6 +82,11 @@ public class WandInteractListener implements Listener {
         if ("inventory".equalsIgnoreCase(wand.getSource())) {
             material = clickedBlock.getType();
             availableAmount = getTotalAmountInInventory(player, material);
+            if (availableAmount == 0) {
+                String noBlocksMsg = plugin.getConfig().getString("messages.no-blocks-inventory", "&cNon hai abbastanza blocchi nell'inventario!");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', noBlocksMsg));
+                return;
+            }
         } else {
             ItemStack offHand = player.getInventory().getItemInOffHand();
             if (offHand == null || offHand.getType().isAir() || !offHand.getType().isBlock()) {

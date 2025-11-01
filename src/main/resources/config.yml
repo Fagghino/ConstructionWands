@@ -1,6 +1,8 @@
 # Configuration file for ConstructionWands plugin
 # Define custom construction wands and messages
-# Each wand has specific attributes like name, model data, lore, range, type, uses, and whether it's infinite.
+# Each wand has specific attributes like name, model data, 
+# range, length, delay, source hand, type, uses, and whether it is infinite.
+# Source: inventory | offhand
 # Modify the values as needed to customize your wands.
 # Wands can be given to players using the /wand command defined in plugin.yml
 # Ensure that the permissions are set correctly in plugin.yml to control access to the commands.
@@ -57,5 +59,6 @@ messages:
   wand-given: "&aHai ricevuto una {wand}!"
   wand-not-found: "&cBacchetta non trovata!"
   no-blocks: "&cNon hai abbastanza blocchi nella mano secondaria!"
+  no-blocks-inventory: "&cNon hai abbastanza blocchi nell'inventario!"
   cooldown: "&cDevi aspettare prima di usare nuovamente la bacchetta!"
   uses-depleted: "&cLa bacchetta ha esaurito gli usi!"
