@@ -23,6 +23,17 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>bg-software</id>
+            <name>BG Software Public Repository</name>
+            <url>https://repo.bg-software.com/repository/api/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -30,6 +41,12 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.20.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bgsoftware</groupId>
+            <artifactId>SuperiorSkyblockAPI</artifactId>
+            <version>2023.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
