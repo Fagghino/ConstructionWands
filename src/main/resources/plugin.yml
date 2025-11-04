@@ -4,6 +4,8 @@ main: com.franchino961.constructionwands.ConstructionWands
 api-version: '1.20'
 author: Franchino961
 description: Plugin per bacchette di costruzione personalizzate
+softdepend:
+  - SuperiorSkyblock2
 
 commands:
   wand:
