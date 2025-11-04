@@ -128,12 +128,20 @@ public class WandInteractListener implements Listener {
         BlockFace perp1 = perpendiculars[0];
         BlockFace perp2 = perpendiculars[1];
 
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
         for (int k = -lengthOffset; k <= lengthOffset; k++) {
             Block layerBlock = startBlock.getRelative(face, k);
             for (int i = -offset; i <= offset; i++) {
                 for (int j = -offset; j <= offset; j++) {
                     if (blocksPlaced >= amount) return blocksPlaced;
                     Block targetBlock = layerBlock.getRelative(perp1, i).getRelative(perp2, j);
+                    
+                    // Verifica protezioni (world border, eventi, SS2)
+                    if (!plugin.getProtections().canPlace(player, targetBlock, clickedBlock, itemInHand, EquipmentSlot.HAND)) {
+                        continue;
+                    }
+                    
                     if (canPlaceBlock(targetBlock, player)) {
                         targetBlock.setType(material);
                         blocksPlaced++;
