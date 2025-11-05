@@ -27,10 +27,10 @@ public class Protections {
 
     /**
      * Verifica se il giocatore può piazzare un blocco in questa posizione.
-     * Controlla: World Border, altri plugin di protezione (via BlockPlaceEvent), e SuperiorSkyblock2.
+     * Controlla: World Border (sempre), altri plugin di protezione (via BlockPlaceEvent), e SuperiorSkyblock2.
      */
     public boolean canPlace(Player player, Block target, Block placedAgainst, ItemStack itemInHand, EquipmentSlot hand) {
-        // 1) World Border check
+        // 1) World Border check (SEMPRE controllato, anche per admin bypass)
         WorldBorder border = target.getWorld().getWorldBorder();
         if (border != null) {
             Location location = target.getLocation().add(0.5, 0.5, 0.5);
@@ -58,7 +58,8 @@ public class Protections {
     }
 
     /**
-     * Verifica se il giocatore può costruire nella locazione (deve essere nella sua isola o in un'isola dove ha permessi).
+     * Verifica se il giocatore può costruire nella locazione.
+     * Permette: proprietario, membri, coop e giocatori con permessi personalizzati di costruzione.
      */
     private boolean canBuildInIsland(Player player, Location location) {
         try {
@@ -73,21 +74,44 @@ public class Protections {
                 return false;
             }
 
-            Island playerIsland = superiorPlayer.getIsland();
-            if (playerIsland == null) {
-                // Il giocatore non ha un'isola
-                return false;
-            }
-
-            // Verifica se è la stessa isola (include membri del team)
-            if (playerIsland.equals(islandAt)) {
+            // Verifica se lo staffer ha bypass admin attivo
+            if (superiorPlayer.hasBypassModeEnabled()) {
                 return true;
             }
 
-            // Verifica se il giocatore ha permessi di costruzione sull'isola (es. coop)
-            // Nota: hasPermission potrebbe richiedere IslandPrivilege specifico, verifica API
-            // Per sicurezza, consentiamo solo se è la propria isola
-            return false;
+            // Verifica se il giocatore è il proprietario
+            if (islandAt.getOwner().equals(superiorPlayer)) {
+                return true;
+            }
+
+            // Verifica se è un membro del team
+            if (islandAt.isMember(superiorPlayer)) {
+                return true;
+            }
+
+            // Verifica se è un coop player
+            if (islandAt.isCoop(superiorPlayer)) {
+                return true;
+            }
+
+            // Verifica se ha permessi personalizzati di piazzare blocchi
+            // Questo copre i player con permessi dati tramite /is permission
+            try {
+                // Prova a usare hasPermission con reflection per evitare problemi di API
+                java.lang.reflect.Method hasPermMethod = islandAt.getClass().getMethod("hasPermission", 
+                    com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer.class, 
+                    com.bgsoftware.superiorskyblock.api.island.IslandPrivilege.class);
+                
+                // Cerca il privilegio BLOCK_PLACE
+                Class<?> privilegeClass = Class.forName("com.bgsoftware.superiorskyblock.api.island.IslandPrivileges");
+                Object blockPlacePrivilege = privilegeClass.getField("BLOCK_PLACE").get(null);
+                
+                Boolean hasPermission = (Boolean) hasPermMethod.invoke(islandAt, superiorPlayer, blockPlacePrivilege);
+                return hasPermission != null && hasPermission;
+            } catch (Exception e) {
+                // Se la reflection fallisce, nega l'accesso per sicurezza
+                return false;
+            }
 
         } catch (Throwable ex) {
             // In caso di errore API (mismatch versione), comportamento permissivo
