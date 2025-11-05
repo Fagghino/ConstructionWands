@@ -100,6 +100,16 @@ public class WandInteractListener implements Listener {
 
         int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, material, range, length, availableAmount);
 
+        if (blocksPlaced == 0 && plugin.getProtections().isSsb2Present()) {
+            // Se nessun blocco è stato piazzato e SS2 è attivo, controlla se è per mancanza di permessi
+            Block testBlock = clickedBlock.getRelative(blockFace);
+            if (!plugin.getProtections().canPlace(player, testBlock, clickedBlock, player.getInventory().getItemInMainHand(), org.bukkit.inventory.EquipmentSlot.HAND)) {
+                String noPermMsg = plugin.getConfig().getString("messages.no-island-permission", "&cNon hai il permesso per costruire su questa isola!");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermMsg));
+            }
+            return;
+        }
+
         if (blocksPlaced > 0) {
             if (player.getGameMode() != org.bukkit.GameMode.CREATIVE) {
                 if ("inventory".equalsIgnoreCase(wand.getSource())) {
