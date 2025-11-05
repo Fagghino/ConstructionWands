@@ -60,5 +60,6 @@ messages:
   wand-not-found: "&cBacchetta non trovata!"
   no-blocks: "&cNon hai abbastanza blocchi nella mano secondaria!"
   no-blocks-inventory: "&cNon hai abbastanza blocchi nell'inventario!"
+  no-island-permission: "&cNon hai il permesso per costruire su questa isola!"
   cooldown: "&cDevi aspettare prima di usare nuovamente la bacchetta!"
   uses-depleted: "&cLa bacchetta ha esaurito gli usi!"
