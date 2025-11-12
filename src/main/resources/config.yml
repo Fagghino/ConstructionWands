@@ -8,6 +8,28 @@
 # Ensure that the permissions are set correctly in plugin.yml to control access to the commands.
 # Example wands are provided below.
 
+# Blocked blocks - blocks on which wands cannot place blocks
+# Add any Minecraft material name to prevent placement on those blocks
+blocked-blocks:
+  - SPAWNER
+  - BEDROCK
+  - BARRIER
+  - COMMAND_BLOCK
+  - CHAIN_COMMAND_BLOCK
+  - REPEATING_COMMAND_BLOCK
+  - STRUCTURE_BLOCK
+  - JIGSAW
+  - END_PORTAL_FRAME
+  - CHEST
+  - TRAPPED_CHEST
+  - BARREL
+  - FURNACE
+  - DISPENSER
+  - DROPPER
+  - HOPPER
+  - ANVIL
+  - ENDER_CHEST
+
 wands:
   basic_wand:
     name: "&6Bacchetta Base"
@@ -15,6 +37,7 @@ wands:
     lore:
       - "&7Range: 1x1x1"
       - "&7Click destro per piazzare blocchi"
+      - "&7Click sinistro per annullare l'ultimo piazzamento"
       - "&eUSES RIMANENTI: {uses}"
     range: 1
     length: 1
@@ -23,6 +46,7 @@ wands:
     type: BLAZE_ROD
     uses: 100
     infinite: false
+    enable-undo: true
 
   medium_wand:
     name: "&aBacchetta Media"
@@ -30,6 +54,7 @@ wands:
     lore:
       - "&7Range: 3x3x1"
       - "&7Click destro per piazzare blocchi"
+      - "&7Click sinistro per annullare l'ultimo piazzamento"
       - "&eUSES RIMANENTI: {uses}"
     range: 3
     length: 1
@@ -38,6 +63,7 @@ wands:
     type: STICK
     uses: 50
     infinite: false
+    enable-undo: true
 
   advanced_wand:
     name: "&cBacchetta Avanzata"
@@ -45,6 +71,7 @@ wands:
     lore:
       - "&7Range: 5x5x1"
       - "&7Click destro per piazzare blocchi"
+      - "&7Click sinistro per annullare l'ultimo piazzamento"
       - "&dINFINITA!"
     range: 5
     length: 1
@@ -53,6 +80,10 @@ wands:
     type: BLAZE_ROD
     uses: -1
     infinite: true
+    enable-undo: true
+
+# Undo timeout in milliseconds (60000 = 60 seconds)
+undo-timeout: 60000
 
 messages:
   no-permission: "&cNon hai il permesso per usare questo comando!"
@@ -61,5 +92,10 @@ messages:
   no-blocks: "&cNon hai abbastanza blocchi nella mano secondaria!"
   no-blocks-inventory: "&cNon hai abbastanza blocchi nell'inventario!"
   no-island-permission: "&cNon hai il permesso per costruire su questa isola!"
+  blocked-block: "&cNon puoi piazzare questo blocco con la bacchetta!"
   cooldown: "&cDevi aspettare prima di usare nuovamente la bacchetta!"
   uses-depleted: "&cLa bacchetta ha esaurito gli usi!"
+  undo-success: "&aAnnullamento riuscito! Rimossi %blocks% blocchi."
+  undo-timeout-expired: "&cTempo scaduto! Non puoi più annullare questo piazzamento."
+  undo-no-placement: "&cNon c'è niente da annullare!"
+  undo-blocks-changed: " &e%changed% blocchi sono stati già modificati."
