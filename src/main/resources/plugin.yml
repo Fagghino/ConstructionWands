@@ -9,14 +9,14 @@ softdepend:
 
 commands:
   wand:
-    description: Ottieni o dai una bacchetta di costruzione
-    usage: /wand <nome_bacchetta> [nome_player] [quantità]
-    permission: constructionwands.give
+    description: Gestione bacchette di costruzione
+    usage: /wand <give|reload|list> [args...]
+    permission: constructionwands.admin
     permission-message: Non hai il permesso per usare questo comando!
 
 permissions:
-  constructionwands.give:
-    description: Permesso per ottenere bacchette
+  constructionwands.admin:
+    description: Permesso amministratore per gestire le bacchette
     default: op
   constructionwands.use:
     description: Permesso per usare le bacchette
