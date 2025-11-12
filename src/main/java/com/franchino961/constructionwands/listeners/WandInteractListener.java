@@ -14,7 +14,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WandInteractListener implements Listener {
@@ -23,15 +25,43 @@ public class WandInteractListener implements Listener {
     private final WandManager wandManager;
     private final Map<Player, Long> lastUse = new HashMap<>();
     private final Map<Player, Long> lastClick = new HashMap<>();
+    private final Map<Player, PlacementRecord> lastPlacement = new HashMap<>();
+    private final List<Material> blockedBlocks = new ArrayList<>();
+    
+    // Record per tracciare l'ultimo piazzamento
+    private static class PlacementRecord {
+        final List<Block> blocks;
+        final Material material;
+        final long timestamp;
+        
+        PlacementRecord(List<Block> blocks, Material material) {
+            this.blocks = blocks;
+            this.material = material;
+            this.timestamp = System.currentTimeMillis();
+        }
+    }
 
     public WandInteractListener(ConstructionWands plugin, WandManager wandManager) {
         this.plugin = plugin;
         this.wandManager = wandManager;
+        loadBlockedBlocks();
+    }
+    
+    private void loadBlockedBlocks() {
+        List<String> blockedList = plugin.getConfig().getStringList("blocked-blocks");
+        for (String materialName : blockedList) {
+            try {
+                Material material = Material.valueOf(materialName.toUpperCase());
+                blockedBlocks.add(material);
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("Invalid material in blocked-blocks: " + materialName);
+            }
+        }
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         Player player = event.getPlayer();
@@ -59,6 +89,15 @@ public class WandInteractListener implements Listener {
         Wand wand = wandManager.getWand(wandId);
         if (wand == null) return;
 
+        // Gestione UNDO con click sinistro (solo se abilitato per questa bacchetta)
+        if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (wand.isEnableUndo()) {
+                handleUndo(player);
+            }
+            event.setCancelled(true);
+            return;
+        }
+
         long delay = wand.getDelay();
         if (delay > 0) {
             Long lastUseTime = lastUse.get(player);
@@ -73,6 +112,13 @@ public class WandInteractListener implements Listener {
         Block clickedBlock = event.getClickedBlock();
         BlockFace blockFace = event.getBlockFace();
         if (clickedBlock == null || blockFace == null) return;
+        
+        // Controlla se il blocco cliccato è nella lista dei blocchi bloccati
+        if (blockedBlocks.contains(clickedBlock.getType())) {
+            String blockedMsg = plugin.getConfig().getString("messages.blocked-block", "&cNon puoi piazzare blocchi su questo tipo di blocco!");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', blockedMsg));
+            return;
+        }
 
         int range = wand.getRange();
         int length = wand.getLength();
@@ -98,7 +144,8 @@ public class WandInteractListener implements Listener {
             availableAmount = offHand.getAmount();
         }
 
-        int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, material, range, length, availableAmount);
+        List<Block> placedBlocksList = new ArrayList<>();
+        int blocksPlaced = placeBlocks(player, clickedBlock, blockFace, material, range, length, availableAmount, placedBlocksList);
 
         if (blocksPlaced == 0 && plugin.getProtections().isSsb2Present()) {
             // Se nessun blocco è stato piazzato e SS2 è attivo, controlla se è per mancanza di permessi
@@ -126,10 +173,15 @@ public class WandInteractListener implements Listener {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', depletedMsg));
                 player.getInventory().setItemInMainHand(null);
             }
+            
+            // Salva il record del piazzamento per undo
+            if (blocksPlaced > 0) {
+                lastPlacement.put(player, new PlacementRecord(placedBlocksList, material));
+            }
         }
     }
 
-    private int placeBlocks(Player player, Block clickedBlock, BlockFace face, Material material, int range, int length, int amount) {
+    private int placeBlocks(Player player, Block clickedBlock, BlockFace face, Material material, int range, int length, int amount, List<Block> placedBlocksList) {
         int blocksPlaced = 0;
         Block startBlock = clickedBlock.getRelative(face);
         int offset = (range - 1) / 2;
@@ -154,6 +206,7 @@ public class WandInteractListener implements Listener {
                     
                     if (canPlaceBlock(targetBlock, player)) {
                         targetBlock.setType(material);
+                        placedBlocksList.add(targetBlock);
                         blocksPlaced++;
                     }
                 }
@@ -205,5 +258,61 @@ public class WandInteractListener implements Listener {
                 if (amount <= 0) break;
             }
         }
+    }
+
+    private void handleUndo(Player player) {
+        PlacementRecord record = lastPlacement.get(player);
+
+        if (record == null) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    plugin.getConfig().getString("messages.undo-no-placement", "&cNo placement to undo!")));
+            return;
+        }
+
+        long undoTimeout = plugin.getConfig().getLong("undo-timeout", 60000);
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - record.timestamp > undoTimeout) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    plugin.getConfig().getString("messages.undo-timeout-expired", "&cUndo timeout expired!")));
+            lastPlacement.remove(player);
+            return;
+        }
+
+        int blocksRemoved = 0;
+        int blocksChanged = 0;
+
+        for (Block block : record.blocks) {
+            if (block.getType() == record.material) {
+                block.setType(Material.AIR);
+                blocksRemoved++;
+            } else {
+                blocksChanged++;
+            }
+        }
+
+        // Give items back to player
+        ItemStack itemsToReturn = new ItemStack(record.material, blocksRemoved);
+        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(itemsToReturn);
+
+        // Drop items that don't fit
+        if (!leftover.isEmpty()) {
+            for (ItemStack item : leftover.values()) {
+                player.getWorld().dropItemNaturally(player.getLocation(), item);
+            }
+        }
+
+        lastPlacement.remove(player);
+
+        String message = plugin.getConfig().getString("messages.undo-success", "&aUndo successful! Removed %blocks% blocks.");
+        message = message.replace("%blocks%", String.valueOf(blocksRemoved));
+
+        if (blocksChanged > 0) {
+            message += ChatColor.translateAlternateColorCodes('&',
+                    plugin.getConfig().getString("messages.undo-blocks-changed", " &e%changed% blocks were already modified."));
+            message = message.replace("%changed%", String.valueOf(blocksChanged));
+        }
+
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 }
