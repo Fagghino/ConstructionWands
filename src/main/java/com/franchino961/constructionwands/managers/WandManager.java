@@ -49,10 +49,11 @@ public class WandManager {
             Material type = Material.getMaterial(wandSection.getString("type", "STICK"));
             int uses = wandSection.getInt("uses", 100);
             boolean infinite = wandSection.getBoolean("infinite", false);
+            boolean enableUndo = wandSection.getBoolean("enable-undo", true);
 
             if (type == null) continue;
 
-            Wand wand = new Wand(wandId, name, modelData, lore, range, length, delay, source, type, uses, infinite);
+            Wand wand = new Wand(wandId, name, modelData, lore, range, length, delay, source, type, uses, infinite, enableUndo);
             wands.put(wandId, wand);
         }
     }
