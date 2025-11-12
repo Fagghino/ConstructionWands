@@ -16,9 +16,10 @@ public class Wand {
     private final Material type;
     private final int maxUses;
     private final boolean infinite;
+    private final boolean enableUndo;
 
     public Wand(String id, String name, int modelData, List<String> lore,
-                int range, int length, long delay, String source, Material type, int maxUses, boolean infinite) {
+                int range, int length, long delay, String source, Material type, int maxUses, boolean infinite, boolean enableUndo) {
         this.id = id;
         this.name = name;
         this.modelData = modelData;
@@ -30,6 +31,7 @@ public class Wand {
         this.type = type;
         this.maxUses = maxUses;
         this.infinite = infinite;
+        this.enableUndo = enableUndo;
     }
 
     public String getId() { return id; }
@@ -43,4 +45,5 @@ public class Wand {
     public Material getType() { return type; }
     public int getMaxUses() { return maxUses; }
     public boolean isInfinite() { return infinite; }
+    public boolean isEnableUndo() { return enableUndo; }
 }
