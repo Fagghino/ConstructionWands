@@ -15,6 +15,7 @@ ConstructionWands è un plugin Minecraft che permette di creare bacchette person
 - **Usi limitati o infiniti**: Configura bacchette consumabili o permanenti
 - **Custom model data**: Supporto per texture pack personalizzati
 - **Non stackabili**: Ogni bacchetta è unica grazie a UUID univoci
+- **Undo configurabile**: Abilita/disabilita l'annullamento con click sinistro per ogni bacchetta
 
 ### 🎯 Modalità di Piazzamento
 - **Offhand**: Prende blocchi dalla mano secondaria (comportamento classico)
@@ -58,6 +59,7 @@ wands:
     lore:
       - "&7Range: 1x1x1"
       - "&7Click destro per piazzare blocchi"
+      - "&7Click sinistro per annullare l'ultimo piazzamento"
       - "&eUSES RIMANENTI: {uses}"
     range: 1           # Larghezza/profondità della griglia (1 = 1x1, 3 = 3x3, 5 = 5x5, ecc.)
     length: 1          # Altezza della griglia (numero di layer)
@@ -66,6 +68,7 @@ wands:
     type: BLAZE_ROD    # Tipo di item della bacchetta
     uses: 100          # Usi disponibili (-1 per infinito)
     infinite: false    # true = usi infiniti
+    enable-undo: true  # true = abilita annullamento con click sinistro
 ```
 
 ### Parametri Bacchetta
@@ -83,6 +86,7 @@ wands:
 - **type**: Tipo di item Minecraft (BLAZE_ROD, STICK, ecc.)
 - **uses**: Numero di utilizzi (-1 per infinito)
 - **infinite**: true/false per usi infiniti
+- **enable-undo**: true/false per abilitare l'annullamento con click sinistro (default: true)
 
 ### Messaggi Personalizzabili
 
@@ -96,7 +100,35 @@ messages:
   no-island-permission: "&cNon hai il permesso per costruire su questa isola!"
   cooldown: "&cDevi aspettare prima di usare nuovamente la bacchetta!"
   uses-depleted: "&cLa bacchetta ha esaurito gli usi!"
+  blocked-block: "&cNon puoi usare la bacchetta su questo tipo di blocco!"
 ```
+
+### 🚫 Blocchi Protetti
+
+Puoi configurare una lista di blocchi sui quali le bacchette **non possono funzionare**, impedendo il piazzamento anche se il giocatore ha tutti i permessi necessari.
+
+```yaml
+blocked-blocks:
+  - SPAWNER
+  - BEDROCK
+  - BARRIER
+  - COMMAND_BLOCK
+  - CHAIN_COMMAND_BLOCK
+  - REPEATING_COMMAND_BLOCK
+  - STRUCTURE_BLOCK
+  - JIGSAW
+  - END_PORTAL_FRAME
+```
+
+**Caratteristiche:**
+- ❌ Blocca l'uso della bacchetta quando si clicca su un blocco nella lista
+- ✅ Validazione automatica: ignora i blocchi non validi nel config
+- 📝 Log avvisi in console per blocchi non riconosciuti
+- 💬 Messaggio personalizzabile: `blocked-block`
+- 🔒 Protezione aggiuntiva per blocchi critici del server
+
+**Esempio d'uso:**
+Se configuri `SPAWNER` nella lista e clicchi con la bacchetta su uno spawner, riceverai il messaggio configurato in `blocked-block` e l'azione verrà annullata.
 
 ## 🔧 Requisiti
 
@@ -141,7 +173,25 @@ Il plugin si integra automaticamente con SuperiorSkyblock2 se presente sul serve
 
 ## 📝 Changelog
 
-### **Versione 1.2.0** (Corrente) 🎯
+### **Versione 1.5.0** (Corrente) ↩️
+- ✨ **MAJOR:** Sistema di undo configurabile per singola bacchetta
+- ✨ **Nuovo:** Opzione `enable-undo` per ogni bacchetta nel config.yml
+- ✨ **Nuovo:** Possibilità di abilitare/disabilitare l'annullamento con click sinistro per ogni bacchetta
+- 🔧 **Migliorato:** Controllo undo specifico per bacchetta invece che globale
+- 📚 **Documentazione:** Aggiornata sezione configurazione con parametro `enable-undo`
+- 📚 **Documentazione:** Aggiunto parametro nella lista funzionalità principali
+
+### **Versione 1.4.0** 🚫
+- ✨ **MAJOR:** Sistema di blocchi protetti configurabili
+- ✨ **Nuovo:** Opzione `blocked-blocks` nel config.yml per impedire l'uso su blocchi specifici
+- ✨ **Nuovo:** Validazione automatica dei blocchi con log degli errori
+- ✨ **Nuovo:** Messaggio personalizzato `blocked-block` quando si clicca su un blocco protetto
+- 🔧 **Migliorato:** Protezione aggiuntiva per blocchi critici come spawner, bedrock, command block
+- 🔧 **Ottimizzato:** Controllo blocchi protetti prima del piazzamento
+- 📚 **Documentazione:** Nuova sezione "Blocchi Protetti" nel README
+- 🐛 **Risolto:** Possibilità di usare bacchette su blocchi sensibili del server
+
+### **Versione 1.2.0** 🎯
 - ✨ **MAJOR:** Integrazione completa con SuperiorSkyblock2
 - ✨ **Nuovo:** Supporto per coop players e permessi personalizzati isole
 - ✨ **Nuovo:** Bypass admin per staffer con `/is admin bypass`
@@ -240,6 +290,6 @@ I contributi sono benvenuti! Sentiti libero di aprire pull request.
 ---
 
 **Autore**: Franchino961  
-**Versione**: 1.2.0  
+**Versione**: 1.5.0  
 **API**: Spigot 1.20.1  
 **Java**: 17
