@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>ConstructionWands</name>
+    <name>Franchino961-ConstructionWands</name>
     <description>Plugin per bacchette di costruzione personalizzate</description>
 
     <properties>
