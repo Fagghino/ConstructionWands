@@ -6,6 +6,7 @@ author: Franchino961
 description: Plugin per bacchette di costruzione personalizzate
 softdepend:
   - SuperiorSkyblock2
+  - Vulcan
 
 commands:
   wand:
