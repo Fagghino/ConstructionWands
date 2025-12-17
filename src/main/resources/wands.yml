@@ -1,0 +1,127 @@
+# Wands Configuration File
+# Define all construction wands here
+# 
+# Attributes explanation:
+# - name: Display name (supports color codes with &)
+# - model-data: Custom model data ID for resource packs
+# - lore: Item description (list of strings, use {uses} placeholder)
+# - range: Grid size (1 = 1x1, 3 = 3x3, 5 = 5x5, etc.)
+# - length: Grid height/depth (number of layers)
+# - delay: Cooldown in milliseconds (0 = no cooldown)
+# - source: Where to get blocks from
+#     * offhand - Uses blocks from offhand
+#     * inventory - Uses blocks from inventory (same type as clicked block)
+# - type: Item material type (BLAZE_ROD, STICK, etc.)
+# - uses: Available uses (-1 or set infinite to true for unlimited)
+# - infinite: true/false for infinite uses
+# - left-click-action: Left click function
+#     * NONE - Does nothing
+#     * UNDO - Undoes last placement (requires blocks to be unchanged)
+#     * MODE - Cycles through placement modes (AUTO → VERTICAL → HORIZONTAL)
+#
+# Placement Modes (when left-click-action is MODE):
+# - AUTO: Places blocks based on clicked face direction (default behavior)
+# - VERTICAL: Always places blocks vertically (Y axis)
+# - HORIZONTAL: Always places blocks horizontally (XZ plane)
+#
+# Wands can be given to players using: /wand <wand_id> [player] [amount]
+
+wands:
+  # Example 1: Basic wand with undo function
+  stone_wand:
+    name: "&7Bacchetta di Pietra"
+    model-data: 1001
+    lore:
+      - "&7Range: 1x1x1"
+      - "&7Click destro per piazzare blocchi"
+      - "&7Click sinistro per annullare"
+      - "&eUSI: {uses}"
+      - "&7Modalità: {mode}"
+      # Example in this case: Modalità: UNDO
+    range: 1
+    length: 1
+    delay: 0
+    source: offhand
+    type: STICK
+    uses: 50
+    infinite: false
+    left-click-action: UNDO
+
+  # Example 2: Medium wand with mode switching
+  iron_wand:
+    name: "&fBacchetta di Ferro"
+    model-data: 1002
+    lore:
+      - "&7Range: 3x3x1"
+      - "&7Click destro per piazzare"
+      - "&7Click sinistro per cambiare modalità"
+      - "&eUSI: {uses}"
+      - "&7Modalità: {mode}"
+      # Possible Example in this case: 
+      # Modalità: AUTO
+      # Modalità: VERTICALE
+      # Modalità: ORIZZONTALE
+    range: 3
+    length: 1
+    delay: 500
+    source: offhand
+    type: IRON_INGOT
+    uses: 100
+    infinite: false
+    left-click-action: MODE
+
+  # Example 3: Advanced wand with inventory source
+  diamond_wand:
+    name: "&bBacchetta di Diamante"
+    model-data: 1003
+    lore:
+      - "&7Range: 5x5x2"
+      - "&7Usa blocchi dall'inventario"
+      - "&7Click sinistro per cambiare modalità"
+      - "&eUSI: {uses}"
+    range: 5
+    length: 2
+    delay: 1000
+    source: inventory
+    type: DIAMOND
+    uses: 200
+    infinite: false
+    left-click-action: MODE
+
+  # Example 4: Infinite creative wand
+  master_wand:
+    name: "&6&lBacchetta Suprema"
+    model-data: 1004
+    lore:
+      - "&7Range: 7x7x3"
+      - "&7Click destro per piazzare"
+      - "&7Click sinistro per cambiare modalità"
+      - "&d&lINFINITA!"
+    range: 7
+    length: 3
+    delay: 0
+    source: offhand
+    type: BLAZE_ROD
+    uses: -1
+    infinite: true
+    left-click-action: MODE
+
+  # Example 5: Simple wand with no left-click action
+  wooden_wand:
+    name: "&eBackchetta di Legno"
+    model-data: 1005
+    lore:
+      - "&7Range: 2x2x1"
+      - "&7Click destro per piazzare blocchi"
+      - "&eUSI: {uses}"
+      - "&7Modalità: {mode}"
+      # Example in this case:
+      # Modalità: NONE
+    range: 2
+    length: 1
+    delay: 0
+    source: offhand
+    type: STICK
+    uses: 30
+    infinite: false
+    left-click-action: NONE
