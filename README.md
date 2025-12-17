@@ -1,12 +1,16 @@
 # 🏗️ ConstructionWands
 
-Plugin Spigot/Paper per bacchette di costruzione personalizzate con supporto per SuperiorSkyblock2.
+[![Version](https://img.shields.io/badge/version-1.7.0-blue.svg)]()
+[![Minecraft](https://img.shields.io/badge/minecraft-1.20+-green.svg)](https://www.minecraft.net/)
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+
+**ConstructionWands** è un plugin Spigot/Paper per bacchette di costruzione personalizzate con supporto completo per SuperiorSkyblock2. Permette di creare bacchette per piazzare blocchi in griglie di dimensioni configurabili con controllo granulare delle protezioni.
 
 ## 📋 Descrizione
 
 ConstructionWands è un plugin Minecraft che permette di creare bacchette personalizzate per piazzare blocchi in griglia. Supporta configurazione avanzata per range, altezza, cooldown, e integrazione completa con SuperiorSkyblock2 per la gestione delle protezioni delle isole.
 
-## ✨ Funzionalità Principali
+## ✨ Caratteristiche Principali
 
 ### 🪄 Bacchette Personalizzabili
 - **Range configurabile**: Piazza blocchi in griglie da 1x1 fino a NxN
@@ -15,9 +19,16 @@ ConstructionWands è un plugin Minecraft che permette di creare bacchette person
 - **Usi limitati o infiniti**: Configura bacchette consumabili o permanenti
 - **Custom model data**: Supporto per texture pack personalizzati
 - **Non stackabili**: Ogni bacchetta è unica grazie a UUID univoci
-- **Undo configurabile**: Abilita/disabilita l'annullamento con click sinistro per ogni bacchetta
+- **Left-click action configurabile**: Scegli la funzione del click sinistro (NONE/UNDO/MODE)
 
 ### 🎯 Modalità di Piazzamento
+- **AUTO** (default): Direzione basata sulla faccia del blocco cliccato
+- **VERTICALE**: Piazzamento sempre verticale (asse Y), indipendentemente dalla faccia cliccata
+- **ORIZZONTALE**: Piazzamento sempre orizzontale (piano XZ), indipendentemente dalla faccia cliccata
+- **Cambio modalità**: Con click sinistro se `left-click-action: MODE` è configurato
+- **Persistenza**: Modalità salvata per ogni player e per ogni bacchetta individualmente
+
+### 🔄 Sorgente Blocchi
 - **Offhand**: Prende blocchi dalla mano secondaria (comportamento classico)
 - **Inventory**: Prende blocchi dall'inventario dello stesso tipo del blocco cliccato
 
@@ -28,6 +39,7 @@ ConstructionWands è un plugin Minecraft che permette di creare bacchette person
   - Supporto coop players
   - Permessi personalizzati tramite `/is permission`
   - Bypass admin con `/is admin bypass` per gli staffer
+  - **Conteggio blocchi isola**: I blocchi piazzati vengono correttamente tracciati per il calcolo del livello isola
 - **Altri plugin di protezione**: Compatibile con WorldGuard, GriefPrevention, ecc. tramite BlockPlaceEvent
 
 ### ⚙️ Comandi
@@ -45,30 +57,34 @@ ConstructionWands è un plugin Minecraft che permette di creare bacchette person
 2. Copia il file `.jar` nella cartella `plugins` del server
 3. (Opzionale) Installa SuperiorSkyblock2 per il supporto isole
 4. Avvia/riavvia il server
-5. Modifica `config.yml` per personalizzare le bacchette
+5. Modifica `config.yml` e `wands.yml` per personalizzare le bacchette
 
 ## 📝 Configurazione
 
-### Esempio Bacchetta
+Il plugin utilizza due file di configurazione separati:
+- **`config.yml`** - Configurazioni generali (blocchi protetti, messaggi, timeout undo)
+- **`wands.yml`** - Definizioni di tutte le bacchette disponibili
+
+### Esempio Bacchetta (wands.yml)
 
 ```yaml
 wands:
-  basic_wand:
-    name: "&6Bacchetta Base"
-    model-data: 1001
+  iron_wand:
+    name: "&fBacchetta di Ferro"
+    model-data: 1002
     lore:
-      - "&7Range: 1x1x1"
-      - "&7Click destro per piazzare blocchi"
-      - "&7Click sinistro per annullare l'ultimo piazzamento"
-      - "&eUSES RIMANENTI: {uses}"
-    range: 1           # Larghezza/profondità della griglia (1 = 1x1, 3 = 3x3, 5 = 5x5, ecc.)
+      - "&7Range: 3x3x1"
+      - "&7Click destro per piazzare"
+      - "&7Click sinistro per cambiare modalità"
+      - "&eUSI: {uses}"
+    range: 3           # Larghezza/profondità della griglia (1 = 1x1, 3 = 3x3, 5 = 5x5, ecc.)
     length: 1          # Altezza della griglia (numero di layer)
-    delay: 0           # Cooldown in millisecondi (0 = nessun delay, 1000 = 1 secondo)
+    delay: 500         # Cooldown in millisecondi (0 = nessun delay, 1000 = 1 secondo)
     source: offhand    # Da dove prendere i blocchi: "offhand" o "inventory"
-    type: BLAZE_ROD    # Tipo di item della bacchetta
+    type: IRON_INGOT   # Tipo di item della bacchetta
     uses: 100          # Usi disponibili (-1 per infinito)
     infinite: false    # true = usi infiniti
-    enable-undo: true  # true = abilita annullamento con click sinistro
+    left-click-action: MODE  # Funzione click sinistro: NONE, UNDO, o MODE
 ```
 
 ### Parametri Bacchetta
@@ -86,7 +102,10 @@ wands:
 - **type**: Tipo di item Minecraft (BLAZE_ROD, STICK, ecc.)
 - **uses**: Numero di utilizzi (-1 per infinito)
 - **infinite**: true/false per usi infiniti
-- **enable-undo**: true/false per abilitare l'annullamento con click sinistro (default: true)
+- **left-click-action**: Funzione del click sinistro (default: NONE)
+  - `NONE` - Click sinistro non fa nulla
+  - `UNDO` - Annulla l'ultimo piazzamento (se blocchi non modificati)
+  - `MODE` - Cambia modalità di piazzamento (AUTO → VERTICALE → ORIZZONTALE)
 
 ### Messaggi Personalizzabili
 
@@ -101,6 +120,9 @@ messages:
   cooldown: "&cDevi aspettare prima di usare nuovamente la bacchetta!"
   uses-depleted: "&cLa bacchetta ha esaurito gli usi!"
   blocked-block: "&cNon puoi usare la bacchetta su questo tipo di blocco!"
+  mode-auto: "&aModalità di piazzamento: &eAUTO"
+  mode-vertical: "&aModalità di piazzamento: &eVERTICALE"
+  mode-horizontal: "&aModalità di piazzamento: &eORIZZONTALE"
 ```
 
 ### 🚫 Blocchi Protetti
@@ -173,7 +195,40 @@ Il plugin si integra automaticamente con SuperiorSkyblock2 se presente sul serve
 
 ## 📝 Changelog
 
-### **Versione 1.5.0** (Corrente) ↩️
+### **Versione 1.7.0** (Corrente) 🔄
+- ✨ **MAJOR:** Sistema di modalità di piazzamento configurabili
+- ✨ **MAJOR:** BlockPlaceEvent per compatibilità completa con SuperiorSkyblock2
+- ✨ **Nuovo:** Opzione `left-click-action` configurabile (NONE/UNDO/MODE)
+- ✨ **Nuovo:** Tre modalità di piazzamento: AUTO, VERTICALE, ORIZZONTALE
+- ✨ **Nuovo:** Cambio modalità con click sinistro quando `left-click-action: MODE`
+- ✨ **Nuovo:** Persistenza modalità per ogni player e bacchetta individualmente
+- ✨ **Nuovo:** Messaggi configurabili per cambio modalità (mode-auto, mode-vertical, mode-horizontal)
+- 🔧 **Migliorato:** Blocchi piazzati triggerano BlockPlaceEvent per SS2 e altri plugin
+- 🔧 **Migliorato:** SuperiorSkyblock2 ora conta correttamente i blocchi per il livello isola
+- 🔧 **Ottimizzato:** Sistema left-click unificato con switch case
+- 🔧 **Ottimizzato:** Calcolo direzione piazzamento basato su modalità selezionata
+- 📚 **Documentazione:** Nuova sezione "Modalità di Piazzamento" nel README
+- 📚 **Documentazione:** Aggiornati esempi wands.yml con commenti dettagliati
+- 📚 **Documentazione:** Spiegazione completa left-click-action e placement modes
+- 🎨 **Pulizia:** Rimosso parametro `enable-undo` (sostituito da left-click-action)
+- 🐛 **Risolto:** Blocchi piazzati con wand non conteggiati nel livello isola SS2
+- 🐛 **Risolto:** Eventi BlockPlaceEvent non triggerati correttamente
+
+### **Versione 1.6.0** 📂
+- ✨ **MAJOR:** Sistema di configurazione file separati
+- ✨ **Nuovo:** File `wands.yml` dedicato per le definizioni bacchette
+- ✨ **Nuovo:** Caricamento automatico di `wands.yml` con copia da resources
+- ✨ **Nuovo:** Metodo `loadWandsConfig()` per gestire file custom
+- ✨ **Nuovo:** Getter `getWandsConfig()` per accesso configurazione wand
+- 🔧 **Migliorato:** Separazione logica tra config generale e definizioni wand
+- 🔧 **Migliorato:** `config.yml` ora contiene solo impostazioni generali
+- 🔧 **Ottimizzato:** Gestione file YAML con YamlConfiguration
+- 📚 **Documentazione:** Aggiornata sezione configurazione con file separati
+- 📚 **Documentazione:** Chiarito uso di config.yml vs wands.yml
+- 🎨 **Pulizia:** Rimossa sezione `wands:` da config.yml
+- 🎨 **Organizzazione:** Migliore struttura file per manutenzione
+
+### **Versione 1.5.0** ↩️
 - ✨ **MAJOR:** Sistema di undo configurabile per singola bacchetta
 - ✨ **Nuovo:** Opzione `enable-undo` per ogni bacchetta nel config.yml
 - ✨ **Nuovo:** Possibilità di abilitare/disabilitare l'annullamento con click sinistro per ogni bacchetta
@@ -271,7 +326,8 @@ src/main/
 │   └── models/
 │       └── Wand.java                   # Modello dati bacchetta
 └── resources/
-    ├── config.yml                       # Configurazione
+    ├── config.yml                       # Configurazione generale
+    ├── wands.yml                        # Definizioni bacchette
     └── plugin.yml                       # Metadata plugin
 ```
 
@@ -290,6 +346,6 @@ I contributi sono benvenuti! Sentiti libero di aprire pull request.
 ---
 
 **Autore**: Franchino961  
-**Versione**: 1.5.0  
+**Versione**: 1.7.0  
 **API**: Spigot 1.20.1  
 **Java**: 17
