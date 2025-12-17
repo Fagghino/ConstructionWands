@@ -22,8 +22,7 @@ public class WandCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Controlla permesso admin
         if (!sender.hasPermission("constructionwands.admin")) {
-            String noPermMsg = plugin.getConfig().getString("messages.no-permission", "&cNon hai il permesso per usare questo comando!");
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermMsg));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessage("no-permission")));
             return true;
         }
 
@@ -79,8 +78,7 @@ public class WandCommand implements CommandExecutor, TabCompleter {
 
         ItemStack wandItem = wandManager.createWandItem(wandId);
         if (wandItem == null) {
-            String notFoundMsg = plugin.getConfig().getString("messages.wand-not-found", "&cBacchetta non trovata!");
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', notFoundMsg));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessage("wand-not-found")));
             return true;
         }
 
@@ -88,8 +86,7 @@ public class WandCommand implements CommandExecutor, TabCompleter {
             targetPlayer.getInventory().addItem(wandItem.clone());
         }
 
-        String givenMsg = plugin.getConfig().getString("messages.wand-given", "&aHai ricevuto una {wand}!");
-        givenMsg = givenMsg.replace("{wand}", wandManager.getWand(wandId).getName());
+        String givenMsg = plugin.getMessage("wand-given").replace("{wand}", wandManager.getWand(wandId).getName());
         if (quantity > 1) {
             givenMsg += " x" + quantity;
         }
