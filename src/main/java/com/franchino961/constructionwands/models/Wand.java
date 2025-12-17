@@ -5,6 +5,22 @@ import java.util.List;
 
 public class Wand {
 
+    public enum LeftClickAction {
+        NONE,
+        UNDO,
+        MODE
+    }
+
+    public enum PlacementMode {
+        AUTO,
+        VERTICAL,
+        HORIZONTAL;
+
+        public PlacementMode next() {
+            return values()[(ordinal() + 1) % values().length];
+        }
+    }
+
     private final String id;
     private final String name;
     private final int modelData;
@@ -16,10 +32,10 @@ public class Wand {
     private final Material type;
     private final int maxUses;
     private final boolean infinite;
-    private final boolean enableUndo;
+    private final LeftClickAction leftClickAction;
 
     public Wand(String id, String name, int modelData, List<String> lore,
-                int range, int length, long delay, String source, Material type, int maxUses, boolean infinite, boolean enableUndo) {
+                int range, int length, long delay, String source, Material type, int maxUses, boolean infinite, LeftClickAction leftClickAction) {
         this.id = id;
         this.name = name;
         this.modelData = modelData;
@@ -31,7 +47,7 @@ public class Wand {
         this.type = type;
         this.maxUses = maxUses;
         this.infinite = infinite;
-        this.enableUndo = enableUndo;
+        this.leftClickAction = leftClickAction;
     }
 
     public String getId() { return id; }
@@ -45,5 +61,5 @@ public class Wand {
     public Material getType() { return type; }
     public int getMaxUses() { return maxUses; }
     public boolean isInfinite() { return infinite; }
-    public boolean isEnableUndo() { return enableUndo; }
+    public LeftClickAction getLeftClickAction() { return leftClickAction; }
 }
