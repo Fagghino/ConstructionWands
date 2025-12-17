@@ -1,0 +1,41 @@
+# Language Configuration File
+# Available languages: en_US, it_IT
+# Configure the language in config.yml with: lang: en_US or lang: it_IT
+
+# English (US)
+en_US:
+  no-permission: "&cYou don't have permission to use this command!"
+  wand-given: "&aYou received a {wand}!"
+  wand-not-found: "&cWand not found!"
+  no-blocks: "&cYou don't have enough blocks in your offhand!"
+  no-blocks-inventory: "&cYou don't have enough blocks in your inventory!"
+  no-island-permission: "&cYou don't have permission to build on this island!"
+  blocked-block: "&cYou cannot place blocks on this type of block!"
+  cooldown: "&cYou must wait before using the wand again!"
+  uses-depleted: "&cThe wand has run out of uses!"
+  undo-success: "&aUndo successful! Removed %blocks% blocks."
+  undo-timeout-expired: "&cTimeout expired! You can no longer undo this placement."
+  undo-no-placement: "&cThere's nothing to undo!"
+  undo-blocks-changed: " &e%changed% blocks have already been modified."
+  mode-auto: "&aPlacement mode: &eAUTO"
+  mode-vertical: "&aPlacement mode: &eVERTICAL"
+  mode-horizontal: "&aPlacement mode: &eHORIZONTAL"
+
+# Italian (IT)
+it_IT:
+  no-permission: "&cNon hai il permesso per usare questo comando!"
+  wand-given: "&aHai ricevuto una {wand}!"
+  wand-not-found: "&cBacchetta non trovata!"
+  no-blocks: "&cNon hai abbastanza blocchi nella mano secondaria!"
+  no-blocks-inventory: "&cNon hai abbastanza blocchi nell'inventario!"
+  no-island-permission: "&cNon hai il permesso per costruire su questa isola!"
+  blocked-block: "&cNon puoi piazzare questo blocco con la bacchetta!"
+  cooldown: "&cDevi aspettare prima di usare nuovamente la bacchetta!"
+  uses-depleted: "&cLa bacchetta ha esaurito gli usi!"
+  undo-success: "&aAnnullamento riuscito! Rimossi %blocks% blocchi."
+  undo-timeout-expired: "&cTempo scaduto! Non puoi più annullare questo piazzamento."
+  undo-no-placement: "&cNon c'è niente da annullare!"
+  undo-blocks-changed: " &e%changed% blocchi sono stati già modificati."
+  mode-auto: "&aModalità di piazzamento: &eAUTO"
+  mode-vertical: "&aModalità di piazzamento: &eVERTICALE"
+  mode-horizontal: "&aModalità di piazzamento: &eORIZZONTALE"
