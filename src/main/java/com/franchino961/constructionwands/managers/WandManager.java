@@ -30,7 +30,7 @@ public class WandManager {
 
     public void loadWandsFromConfig() {
         wands.clear();
-        ConfigurationSection wandsSection = plugin.getConfig().getConfigurationSection("wands");
+        ConfigurationSection wandsSection = plugin.getWandsConfig().getConfigurationSection("wands");
         if (wandsSection == null) return;
 
         for (String wandId : wandsSection.getKeys(false)) {
@@ -49,11 +49,18 @@ public class WandManager {
             Material type = Material.getMaterial(wandSection.getString("type", "STICK"));
             int uses = wandSection.getInt("uses", 100);
             boolean infinite = wandSection.getBoolean("infinite", false);
-            boolean enableUndo = wandSection.getBoolean("enable-undo", true);
+            String leftClickActionStr = wandSection.getString("left-click-action", "NONE").toUpperCase();
+            Wand.LeftClickAction leftClickAction;
+            try {
+                leftClickAction = Wand.LeftClickAction.valueOf(leftClickActionStr);
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("Invalid left-click-action for wand " + wandId + ": " + leftClickActionStr + ". Using NONE.");
+                leftClickAction = Wand.LeftClickAction.NONE;
+            }
 
             if (type == null) continue;
 
-            Wand wand = new Wand(wandId, name, modelData, lore, range, length, delay, source, type, uses, infinite, enableUndo);
+            Wand wand = new Wand(wandId, name, modelData, lore, range, length, delay, source, type, uses, infinite, leftClickAction);
             wands.put(wandId, wand);
         }
     }
@@ -70,8 +77,12 @@ public class WandManager {
             meta.setDisplayName(wand.getName());
             List<String> lore = new ArrayList<>();
             int currentUses = wand.isInfinite() ? -1 : wand.getMaxUses();
+            String modeDisplay = wand.getLeftClickAction().name();
             for (String line : wand.getLore()) {
-                lore.add(line.replace("{uses}", wand.isInfinite() ? "∞" : String.valueOf(currentUses)));
+                String processedLine = line
+                    .replace("{uses}", wand.isInfinite() ? "∞" : String.valueOf(currentUses))
+                    .replace("{mode}", modeDisplay);
+                lore.add(processedLine);
             }
             meta.setLore(lore);
             if (wand.getModelData() > 0) meta.setCustomModelData(wand.getModelData());
@@ -129,4 +140,30 @@ public class WandManager {
 
     public NamespacedKey getWandIdKey() { return wandIdKey; }
     public NamespacedKey getWandUsesKey() { return wandUsesKey; }
+    public NamespacedKey getWandUuidKey() { return wandUuidKey; }
+
+    public void updateWandLore(ItemStack item, Wand.PlacementMode placementMode) {
+        if (!isWand(item)) return;
+        
+        String wandId = getWandId(item);
+        Wand wand = getWand(wandId);
+        if (wand == null) return;
+        
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        
+        List<String> lore = new ArrayList<>();
+        int currentUses = getWandUses(item);
+        String modeDisplay = placementMode != null ? placementMode.name() : "AUTO";
+        
+        for (String line : wand.getLore()) {
+            String processedLine = line
+                .replace("{uses}", wand.isInfinite() ? "∞" : String.valueOf(currentUses))
+                .replace("{mode}", modeDisplay);
+            lore.add(processedLine);
+        }
+        
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+    }
 }
