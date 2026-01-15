@@ -6,7 +6,7 @@
 
     <groupId>com.franchino961</groupId>
     <artifactId>ConstructionWands</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.7.0</version>
     <packaging>jar</packaging>
 
     <name>ConstructionWands</name>
