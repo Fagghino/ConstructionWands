@@ -229,4 +229,4 @@ Per bug report, richieste di funzionalità o domande:
 
 ## 📝 Changelog
 
-Consulta [CHANGELOG.it.md](MD/CHANGELOG.it.md) per la cronologia completa delle versioni.
+Consulta [CHANGELOG.it.md](CHANGELOG.it.md) per la cronologia completa delle versioni.
