@@ -1,51 +1,174 @@
+# =========================
+# Global / workspace noise
+# =========================
 
-# ===== Java / Maven =====
-/target/
-/*.log
+# Operating system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
 
-# Maven wrapper and generated files
-.mvn/
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
+# Editor / IDE files
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+*.swp
+*.swo
+*~
 
-# Compiled class files
-**/*.class
+# Backups / temporary files
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+*.temp
+*.rej
+*.diff
+*.patch
+draft/
+WIP/
 
-# Package Files
+# Logs / diagnostics
+*.log
+*.log.*
+logs/
+log/
+crash-reports/
+debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Caches / tool state
+.cache/
+.eslintcache
+.parcel-cache/
+.turbo/
+.vite/
+.stylelintcache
+.sass-cache/
+.nyc_output/
+coverage/
+
+# Environment / secrets
+.env
+.env.*
+*.env
+*.env.*
+*.local
+*.secret
+*.secrets
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Archives / packaged artifacts
+*.7z
+*.gz
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.xz
+*.bz2
+
+# ==================================
+# Java / Gradle / Maven / Minecraft
+# ==================================
+
+.gradle/
+build/
+dist/
+out/
+target/
+bin/
+classes/
+generated/
+generated-sources/
+generated-resources/
+*.class
 *.jar
 *.war
 *.ear
+*.nar
+*.lck
+dependency-reduced-pom.xml
 
-# ===== IntelliJ IDEA =====
-/.idea/
-*.iml
-*.iws
-*.ipr
+# Minecraft / datapack / plugin / mod dev environments
+run/
+runs/
+run-*/
+.run/
+.minecraft/
+server/
+client/
+world/
+saves/
+testworld/
+testworlds/
+screenshots/
+hs_err_pid*
+replay_pid*
 
-# ===== Eclipse =====
-/.classpath
-/.project
-/.settings/
+# Common mod-loader specific folders
+.fabric/
+.forge/
+.neoforge/
+.mixin.out/
+.mcp/
+.architectury/
 
-# ===== VS Code =====
-/.vscode/
+# Common packaged outputs from mod/plugin tooling
+remappedSrc/
+remappedClasses/
+fabric-out/
+forge-out/
+neoforge-out/
 
-# ===== Generated sources / build outputs =====
-/generated-sources/
-/generated/
-/out/
+# ==================================
+# Python / Node / other tooling
+# ==================================
 
-# ===== OS files =====
-.DS_Store
-Thumbs.db
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+env/
+ENV/
+node_modules/
 
-# ===== Others =====
-# Temporary files
-*~
-*.swp
-*.swo
-*.bak
+# ==================================
+# Optional local-only project files
+# ==================================
 
-# library files
-/lib
+*.pid
+*.seed
+*.sqlite
+*.sqlite3
+*.db
+*.mdb
+*.sublime-workspace
+*.sublime-project
+
+# =========================
+# Documentation / media / assets
+# =========================
+
+Docs/*
+!README.*.md
+!CHANGELOG.*.md
