@@ -8,13 +8,13 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](../README.md)
 [![it](https://img.shields.io/badge/lang-it-green.svg)](README.it.md)
 
-> 📝 [Changelog](CHANGELOG.it.md)
+> 📝 **Changelog**: Consulta [CHANGELOG.it.md](CHANGELOG.it.md) per la cronologia delle versioni.
 
-**ConstructionWands** è un plugin Spigot/Paper per bacchette di costruzione personalizzate con supporto completo per SuperiorSkyblock2. Permette di creare bacchette per piazzare blocchi in griglie di dimensioni configurabili con controllo granulare delle protezioni.
+---
 
-## 📋 Descrizione
+## 📖 Panoramica
 
-ConstructionWands è un plugin Minecraft che permette di creare bacchette personalizzate per piazzare blocchi in griglia. Supporta configurazione avanzata per range, altezza, cooldown, e integrazione completa con SuperiorSkyblock2 per la gestione delle protezioni delle isole.
+**ConstructionWands** è un plugin Spigot/Paper per bacchette di costruzione personalizzate con supporto completo per SuperiorSkyblock2. Permette di creare bacchette per piazzare blocchi in griglia di dimensioni configurabili con controllo granulare delle protezioni. Supporta configurazione avanzata per range, altezza, cooldown, e integrazione completa con SuperiorSkyblock2 per la gestione delle protezioni delle isole.
 
 ## ✨ Caratteristiche
 
@@ -222,11 +222,9 @@ Per bug report, richieste di funzionalità o domande:
 - Apri una [issue](../../issues) su GitHub
 - Contatta lo sviluppatore
 
+---
+
 ## 🔗 Link Utili
 
 - 📚 [Spigot API Documentation](https://hub.spigotmc.org/javadocs/spigot/)
 - 🏙️ [SuperiorSkyblock2 Wiki](https://wiki.bg-software.com/superiorskyblock2/)
-
-## 📝 Changelog
-
-Consulta [CHANGELOG.it.md](CHANGELOG.it.md) per la cronologia completa delle versioni.
