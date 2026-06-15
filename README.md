@@ -8,7 +8,11 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 [![it](https://img.shields.io/badge/lang-it-green.svg)](Docs/README.it.md)
 
-> 📝 [Changelog](Docs/CHANGELOG.en.md)
+> 📝 **Changelog**: See [CHANGELOG.en.md](Docs/CHANGELOG.en.md) for version history.
+
+---
+
+## 📖 Overview
 
 **ConstructionWands** is a Spigot/Paper plugin for custom construction wands with full support for SuperiorSkyblock2. Create wands to place blocks in configurable grid sizes with granular protection control.
 
@@ -227,6 +231,3 @@ For bug reports, feature requests, or questions:
 - 📚 [Spigot API Documentation](https://hub.spigotmc.org/javadocs/spigot/)
 - 🏙️ [SuperiorSkyblock2 Wiki](https://wiki.bg-software.com/superiorskyblock2/)
 
-## 📝 Changelog
-
-See [CHANGELOG.en.md](Docs/CHANGELOG.en.md) for complete version history.
