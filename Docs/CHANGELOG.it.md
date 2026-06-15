@@ -1,134 +1,146 @@
-# Changelog
+# Changelog - ConstructionWands
 
-Tutte le modifiche rilevanti a questo progetto saranno documentate in questo file.
+Tutte le modifiche rilevanti al plugin **ConstructionWands** saranno documentate in questo file.
 
-Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 e questo progetto segue il [Versionamento Semantico](https://semver.org/spec/v2.0.0.html).
-
-## [1.7.0] - Corrente — Modalità di Piazzamento Configurabili
-
-### ✨ Aggiunto
-- **MAJOR:** Sistema di modalità di piazzamento configurabili
-- **MAJOR:** `BlockPlaceEvent` per compatibilità completa con SuperiorSkyblock2
-- Opzione `left-click-action` configurabile (`NONE` / `UNDO` / `MODE`)
-- Tre modalità di piazzamento: `AUTO`, `VERTICALE`, `ORIZZONTALE`
-- Cambio modalità con click sinistro quando `left-click-action: MODE`
-- Persistenza modalità per ogni player e bacchetta individualmente
-- Messaggi configurabili per cambio modalità (`mode-auto`, `mode-vertical`, `mode-horizontal`)
-
-### 🔧 Migliorato
-- Blocchi piazzati triggerano `BlockPlaceEvent` per SS2 e altri plugin
-- SuperiorSkyblock2 ora conta correttamente i blocchi per il livello isola
-- Sistema left-click unificato con switch case
-- Calcolo direzione piazzamento basato su modalità selezionata
-
-### 🐛 Risolto
-- Blocchi piazzati con wand non conteggiati nel livello isola SS2
-- Eventi `BlockPlaceEvent` non triggerati correttamente
-
-### 🗑️ Rimosso
-- Parametro `enable-undo` (sostituito da `left-click-action`)
-
-## [1.6.0] — File di Configurazione Separati
-
-### ✨ Aggiunto
-- **MAJOR:** Sistema di configurazione file separati
-- File `wands.yml` dedicato per le definizioni bacchette
-- Caricamento automatico di `wands.yml` da resources
-- Metodo `loadWandsConfig()` e getter `getWandsConfig()`
-
-### 🔧 Migliorato
-- Separazione tra configurazione generale e definizioni bacchette
-- `config.yml` ora contiene solo impostazioni generali
-
-## [1.5.0] — Undo Configurabile per Bacchetta
-
-### ✨ Aggiunto
-- **MAJOR:** Sistema di undo configurabile per singola bacchetta
-- Opzione `enable-undo` per ogni bacchetta in `config.yml`
-
-## [1.4.0] — Sistema Blocchi Protetti
-
-### ✨ Aggiunto
-- Sistema di blocchi protetti configurabili
-- Opzione `blocked-blocks` in `config.yml`
-- Validazione automatica blocchi con log degli errori
-- Messaggio `blocked-block` configurabile al click su blocco protetto
-
-### 🐛 Risolto
-- Possibilità di usare bacchette su blocchi sensibili (spawner, bedrock, command block)
-
-## [1.2.0] — Integrazione SuperiorSkyblock2
-
-### ✨ Aggiunto
-- Integrazione completa con SuperiorSkyblock2
-- Supporto per coop players e permessi personalizzati isole
-- Bypass admin (`/is admin bypass`)
-- Messaggio errore quando non si ha il permesso di costruire su un'isola
-- Controllo world border (sempre attivo, anche con bypass admin)
-- Compatibilità con altri plugin di protezione tramite `BlockPlaceEvent`
-- Sistema di reflection per compatibilità versioni API SS2
-- Classe dedicata `Protections.java`
-
-### 🐛 Risolto
-- Blocchi piazzati fuori dal world border con bypass admin
-
-## [1.1.0]
-
-### ✨ Aggiunto
-- Opzione `source` per scegliere da dove prendere i blocchi (offhand/inventory)
-- Modalità inventory: piazza blocchi dello stesso tipo di quello cliccato
-- Opzione `length` per controllare altezza/spessore della griglia
-- Sistema di cooldown configurabile con opzione `delay`
-- Protezione anti-spam: previene doppio click entro 100ms
-- UUID univoci per ogni bacchetta (non stackabili)
-- Comando supporta nome player e quantità (anche da console)
-- Tab completion per nomi giocatori online e quantità suggerite
-- Messaggio personalizzato per mancanza blocchi
-
-### 🐛 Risolto
-- Piazzamento di un solo blocco invece della griglia completa
-- Messaggio cooldown al primo click
-- Doppio click processato come due azioni separate
-
-## [1.0.0] — Release Iniziale
-
-### Aggiunto
-- Sistema di bacchette personalizzabili
-- Configurazione tramite `config.yml`
-- Range configurabile per griglie di piazzamento
-- Sistema di usi limitati o infiniti
-- Custom model data per texture pack
-- Lore dinamico con placeholder `{uses}`
-- Comando `/wand` per ottenere bacchette
-- Sistema di permessi (give e use)
-- Controlli di validità blocchi piazzabili
-- Supporto modalità creativa (blocchi infiniti)
-- Messaggi configurabili per errori e successi
-- Tab completion per nomi bacchette
-- Persistenza usi tramite `PersistentDataContainer`
-
-## [Non Rilasciato]
-
-### Pianificato
-- Supporto forme multi-blocco
-- Cronologia undo con livelli multipli
-- Ricette di crafting per bacchette
 
 ---
 
-## Cronologia Versioni
+## [1.7.0] - 2026-06-15
 
-### Come Leggere i Numeri di Versione
-- **Major.Minor.Patch** (es. 1.7.0)
-  - **Major**: Modifiche incompatibili o aggiunta di funzionalità principali
-  - **Minor**: Nuove funzionalità, compatibili con versioni precedenti
-  - **Patch**: Correzioni di bug e piccoli miglioramenti
+### Aggiunto
+- **Modalità di Piazzamento**: Sistema di modalità di piazzamento configurabili — Tre modalità: `AUTO`, `VERTICALE`, `ORIZZONTALE`.
+- **BlockPlaceEvent**: Aggiunto dispatch di `BlockPlaceEvent` per compatibilità completa con SuperiorSkyblock2.
+- **Left Click Action**: Opzione configurabile `left-click-action` (`NONE` / `UNDO` / `MODE`).
+- **Cambio Modalità**: Cambio modalità con click sinistro quando `left-click-action: MODE`.
+- **Persistenza Modalità**: Persistenza modalità per ogni player e bacchetta individualmente.
+- **Messaggi Modalità**: Messaggi configurabili per cambio modalità (`mode-auto`, `mode-vertical`, `mode-horizontal`).
 
-[1.7.0]: https://github.com/franchino961/constructionwands/releases/tag/v1.7.0
-[1.6.0]: https://github.com/franchino961/constructionwands/releases/tag/v1.6.0
-[1.5.0]: https://github.com/franchino961/constructionwands/releases/tag/v1.5.0
-[1.4.0]: https://github.com/franchino961/constructionwands/releases/tag/v1.4.0
-[1.2.0]: https://github.com/franchino961/constructionwands/releases/tag/v1.2.0
-[1.1.0]: https://github.com/franchino961/constructionwands/releases/tag/v1.1.0
-[1.0.0]: https://github.com/franchino961/constructionwands/releases/tag/v1.0.0
+### Modificato
+- **SuperiorSkyblock2**: I blocchi piazzati vengono ora conteggiati correttamente per il livello isola SS2.
+- **Left Click**: Sistema left-click unificato con switch-case.
+- **Logica Piazzamento**: Il calcolo della direzione di piazzamento è ora basato sulla modalità selezionata.
+
+### Risolto
+- **Livello SS2**: Blocchi piazzati con bacchetta non conteggiati nel livello isola SS2.
+- **BlockPlaceEvent**: `BlockPlaceEvent` non triggerato correttamente.
+
+### Rimosso
+- **enable-undo**: Parametro `enable-undo` rimosso (sostituito da `left-click-action`).
+
+---
+
+## [1.6.0] - 2026-05-15
+
+### Aggiunto
+- **File Config Separati**: File `wands.yml` dedicato per le definizioni delle bacchette.
+- **Auto-Caricamento**: Caricamento automatico di `wands.yml` da resources.
+- **API**: Aggiunto metodo `loadWandsConfig()` e getter `getWandsConfig()`.
+
+### Modificato
+- **config.yml**: Ora contiene solo le impostazioni generali, separato dalle definizioni bacchette.
+
+---
+
+## [1.5.0] - 2026-04-15
+
+### Aggiunto
+- **Undo per Bacchetta**: Sistema di undo configurabile per singola bacchetta tramite opzione `enable-undo` in `config.yml`.
+
+---
+
+## [1.4.0] - 2026-03-15
+
+### Aggiunto
+- **Blocchi Protetti**: Sistema di blocchi protetti configurabili tramite opzione `blocked-blocks`.
+- **Validazione**: Validazione automatica dei blocchi con log degli errori.
+- **Messaggi**: Messaggio `blocked-block` configurabile al click su blocco protetto.
+
+### Risolto
+- **Sicurezza**: Impedito l'uso delle bacchette su blocchi sensibili (spawner, bedrock, command block).
+
+---
+
+## [1.2.0] - 2026-02-15
+
+### Aggiunto
+- **Integrazione SuperiorSkyblock2**: Integrazione completa con SuperiorSkyblock2.
+- **Supporto Coop**: Supporto per coop players e permessi personalizzati isole.
+- **Bypass Admin**: Bypass admin (`/is admin bypass`).
+- **Permesso Costruzione**: Messaggio errore quando non si ha il permesso di costruire su un'isola.
+- **World Border**: Controllo world border (sempre attivo, anche con bypass admin).
+- **Compatibilità Plugin**: Compatibilità con altri plugin di protezione tramite `BlockPlaceEvent`.
+- **Sistema Reflection**: Sistema di reflection per compatibilità versioni API SS2.
+- **Classe Protections**: Classe dedicata `Protections.java`.
+
+### Risolto
+- **World Border**: Blocchi piazzati fuori dal world border con bypass admin.
+
+---
+
+## [1.1.0] - 2026-01-15
+
+### Aggiunto
+- **Sorgente Blocchi**: Opzione `source` per scegliere da dove prendere i blocchi (offhand/inventory).
+- **Modalità Inventory**: Piazza blocchi dello stesso tipo di quello cliccato.
+- **Opzione Length**: Opzione `length` per controllare altezza/spessore della griglia.
+- **Cooldown**: Sistema di cooldown configurabile con opzione `delay`.
+- **Anti-Spam**: Protezione anti-spam — previene doppio click entro 100ms.
+- **UUID Univoci**: UUID univoci per ogni bacchetta (non stackabili).
+- **Supporto Console**: Il comando supporta nome player e quantità anche dalla console.
+- **Tab Completion**: Tab completion per nomi giocatori online e quantità suggerite.
+- **Messaggio Mancanza Blocchi**: Messaggio personalizzato per mancanza blocchi in inventario.
+
+### Risolto
+- **Griglia**: Piazzamento di un solo blocco invece della griglia completa.
+- **Messaggio Cooldown**: Messaggio cooldown al primo click.
+- **Doppio Click**: Doppio click processato come due azioni separate.
+
+---
+
+## [1.0.0] - 2025-12-15
+
+### Aggiunto
+- **Prima Release**: Prima versione di ConstructionWands.
+- **Sistema Bacchette**: Sistema di bacchette personalizzabili tramite `config.yml`.
+- **Range**: Range configurabile per griglie di piazzamento.
+- **Sistema Usi**: Sistema di usi limitati o infiniti.
+- **Custom Model Data**: Supporto custom model data per texture pack.
+- **Lore Dinamico**: Lore dinamico con placeholder `{uses}`.
+- **Comandi**: Comando `/wand` per ottenere bacchette.
+- **Permessi**: Sistema di permessi (give e use).
+- **Validazione Blocchi**: Controlli di validità blocchi piazzabili.
+- **Modalità Creativa**: Supporto modalità creativa (blocchi infiniti).
+- **Messaggi**: Messaggi configurabili per errori e successi.
+- **Tab Completion**: Tab completion per nomi bacchette.
+- **Persistenza**: Persistenza usi tramite `PersistentDataContainer`.
+
+---
+
+## Roadmap di Sviluppo
+
+### Fase 1 - Prima Release ✅
+- Sistema base di bacchette con range e usi configurabili.
+
+### Fase 2 - Usabilità ✅
+- Anti-spam, cooldown, modalità inventory, tab completion.
+
+### Fase 3 - Integrazioni ✅
+- Integrazione SuperiorSkyblock2 con permessi e supporto isole.
+
+### Fase 4 - Configurazione ✅
+- Blocchi protetti, file config separati, undo per bacchetta.
+
+### Fase 5 - Modalità Piazzamento ✅
+- Modalità AUTO/VERTICALE/ORIZZONTALE.
+
+### Fase 6 - Funzionalità Avanzate 📋
+- Supporto forme multi-blocco.
+- Cronologia undo con livelli multipli.
+- Ricette di crafting per bacchette.
+
+---
+
+*Formato: [Versione] - Data*
+*Categorie: Aggiunto, Modificato, Risolto, Rimosso*
