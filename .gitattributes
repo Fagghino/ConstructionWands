@@ -1,0 +1,39 @@
+# ── Comportamento di default ──────────────────────────────────────────────────
+# Normalizza i line ending a LF su tutti i sistemi (evita diff spuri Windows/Mac/Linux)
+* text=auto eol=lf
+
+# ── Sorgenti Java ─────────────────────────────────────────────────────────────
+*.java      text eol=lf
+*.kt        text eol=lf
+
+# ── Configurazione Maven ──────────────────────────────────────────────────────
+pom.xml     text eol=lf
+
+# ── Risorse del plugin ────────────────────────────────────────────────────────
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.properties text eol=lf
+*.xml       text eol=lf
+
+# ── Documentazione ────────────────────────────────────────────────────────────
+*.md        text eol=lf
+*.txt       text eol=lf
+
+# ── Shell / script ────────────────────────────────────────────────────────────
+*.sh        text eol=lf
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+
+# ── Binari — non toccare i line ending ────────────────────────────────────────
+*.jar       binary
+*.class     binary
+*.war       binary
+*.ear       binary
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.zip       binary
+*.gz        binary
+*.tar       binary
